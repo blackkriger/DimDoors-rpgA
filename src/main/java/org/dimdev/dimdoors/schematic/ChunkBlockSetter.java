@@ -27,7 +27,8 @@ public class ChunkBlockSetter implements IBlockSetter {
         ExtendedBlockStorage extBlockStorage;
 
         try {
-            chunk = world.getChunkFromChunkCoords(cX, cZ);
+            chunk = world.getChunkProvider().loadChunk(cX, cZ);
+            if (chunk == null) chunk = world.getChunkFromChunkCoords(cX, cZ);
             extBlockStorage = chunk.getBlockStorageArray()[cY];
             if (extBlockStorage == null) {
                 extBlockStorage = new ExtendedBlockStorage(cY << 4, !world.provider.hasNoSky);

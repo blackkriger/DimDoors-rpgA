@@ -18,9 +18,9 @@ buildscript {
 }
 apply plugin: 'forge'
 
-version = "2.2.6-1.7.10"
+version = "2.2.7-1.7.10"
 group = "org.dimdev.dimdoors" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "DimensionalDoors"
+archivesBaseName = "DimensionalDoors-rpgA"
 
 minecraft {
     version = "1.7.10-10.13.2.1307-1.7.10"
@@ -59,9 +59,30 @@ afterEvaluate {
     }
 }
 
-jar 
+jar
 {
     manifest {
         attributes 'FMLAT': 'DimDoors_at.cfg'
     }
+}
+
+task devJar(type: Jar) {
+    classifier = 'dev'
+    from sourceSets.main.output
+    from(sourceSets.main.resources.srcDirs) { include 'mcmod.info' }
+    manifest {
+        attributes 'FMLAT': 'DimDoors_at.cfg'
+    }
+}
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+build.dependsOn devJar, sourceJar
+
+artifacts {
+    archives devJar
+    archives sourceJar
 }
